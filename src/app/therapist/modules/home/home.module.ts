@@ -23,7 +23,7 @@ import { ProfileModule } from '../profile/profile.module';
     HelpModule,
     ProfileModule,
     SharedComponentsModule,
-    AppRoutingModule
+    AppRoutingModule,
   ]
 })
 export class HomeModule { }

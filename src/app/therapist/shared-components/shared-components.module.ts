@@ -8,6 +8,10 @@ import { SliderVideosComponent } from './slider-videos/slider-videos.component';
 import { ChatIAComponent } from './chat-ia/chat-ia.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { SearchRegistersPipe } from './pipes/search-registers.pipe';
+import { ChartUiComponentComponent } from './chart-ui-component/chart-ui-component.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgChartsModule } from 'ng2-charts';
+import { BadgesInfoComponentComponent } from './badges-info-component/badges-info-component.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +21,15 @@ import { SearchRegistersPipe } from './pipes/search-registers.pipe';
     TasksToReviewComponent,
     ChatIAComponent,
     SpinnerComponent,
-    SearchRegistersPipe
+    SearchRegistersPipe,
+    ChartUiComponentComponent,
+    BadgesInfoComponentComponent
   ],
   imports: [
     CommonModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxChartsModule,
+    NgChartsModule
   ],
   exports:[
     InfoLoginComponent,
@@ -30,7 +38,8 @@ import { SearchRegistersPipe } from './pipes/search-registers.pipe';
     SliderVideosComponent,
     ChatIAComponent,
     SpinnerComponent,
-    SearchRegistersPipe
+    SearchRegistersPipe,
+    ChartUiComponentComponent,
   ]
 })
 export class SharedComponentsModule { }
