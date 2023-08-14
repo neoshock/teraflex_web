@@ -1,0 +1,18 @@
+.input-otp-code {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.input-otp-code input[type="text"] {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.input-otp-code input[type="text"]:last-child {
+    margin-right: 0;
+}

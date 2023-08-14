@@ -1,0 +1,49 @@
+#img-profile{
+    border: 1px solid #dadada;
+}
+
+.card{
+    border-radius: 10px !important;
+    border: 1px solid #eee !important;
+}
+
+.btn-primary {
+    border-radius: 50px;
+    background-color: #007BBD !important;
+    cursor: pointer;
+}
+
+.info{
+    font-weight: 500;
+}
+
+.awards-container{
+    text-align: center;
+}
+
+.col-4{
+    text-align: center;
+}
+
+.category{
+    font-weight: 500;
+}
+
+.award{
+    text-align: center;
+    border: 1px solid #007BBD;
+    border-radius: 50px;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    background-color: #007BBD;
+    color: #FFF;
+    font-weight: 700;
+}
+
+/*-------------Responsive Web Design------------*/
+@media screen and (max-width: 768px){
+    .circle{
+        margin-bottom: 16px;
+    }
+}

@@ -1,0 +1,69 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&family=Poppins:wght@200;300;400;500;600;700&display=swap');*/
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ececec;
+    width: 100%;
+}
+
+/*----------Right-Content (Form Login)-------*/
+.right-content {
+    padding: 40px 60px;
+}
+
+.header-text {
+    color: #007BBD;
+}
+
+input {
+    border-radius: 10px;
+}
+
+::placeholder {
+    font-size: 16px;
+}
+
+.btn {
+    background-color: #007BBD !important;
+    border-radius: 10px;
+    border: none;
+}
+
+.btn-outline-primary {
+    background-color: transparent !important;
+    border: 1px solid #007BBD !important;
+    color: #007BBD !important;
+}
+
+.no-account>a:hover {
+    cursor: pointer;
+}
+
+/*------------ For small screens------------*/
+@media only screen and (max-width: 768px) {
+    .content-image img {
+        width: 120px;
+    }
+
+    .header-text {
+        margin-bottom: 10px !important;
+    }
+
+    .left-content {
+        height: 350px;
+        overflow: hidden;
+        padding: 5px;
+    }
+
+    .right-content {
+        padding: 25px;
+    }
+
+    .location {
+        display: none;
+    }
+
+    .no-account {
+        margin-top: 23px !important;
+    }
+}

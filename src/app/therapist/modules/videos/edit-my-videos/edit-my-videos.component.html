@@ -1,0 +1,120 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="div col-12 mt-3 mx-1">
+                <h4 id="title"><fa-icon [icon]="iconVideo" class="icon-title"></fa-icon> Editar video</h4>
+            </div>
+            <div class="row mt-4">
+                <form [formGroup]="editVideoForm">
+                    <!--Título-->
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <label class="mb-1"><b>Título</b></label>
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="title" placeholder="Título*" [ngClass]="{
+                                'is-invalid': editVideoForm.get('title')?.hasError('required') && editVideoForm.get('title')?.touched || editVideoForm.get('title')?.hasError('pattern')
+                            }" [maxlength]="100" readonly>
+                            <div class="validators"
+                                *ngIf="editVideoForm.get('title')?.hasError('required') && editVideoForm.get('title')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" *ngIf="editVideoForm.get('title')?.hasError('pattern')">
+                                <small>¡Solo se permiten letras!</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!--Tipo-->
+                        <div class="mb-4 col-12 col-md-4">
+                            <label class="mb-1"><b>Tipo</b></label>
+                            <input type="text" class="form-control form-control-lg bg-light fs-6" formControlName="type"
+                                placeholder="Tipo*" [ngClass]="{
+                                'is-invalid': editVideoForm.get('type')?.hasError('required') && editVideoForm.get('type')?.touched || editVideoForm.get('type')?.hasError('pattern')
+                            }" [maxlength]="2" readonly>
+                            <div class="validators"
+                                *ngIf="editVideoForm.get('type')?.hasError('required') && editVideoForm.get('type')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" *ngIf="editVideoForm.get('type')?.hasError('pattern')">
+                                <small>¡Solo se permiten números!</small>
+                            </div>
+                        </div>
+                        <!--Visibilidad-->
+                        <div class="mb-4 col-12 col-md-4">
+                            <label class="mb-1"><b>Visibilidad</b></label>
+                            <select class="form-select form-select-md" aria-label=".form-select-lg example"
+                                [(ngModel)]="optionVisibilitySelected" formControlName="visibility"
+                                [ngClass]="{
+                                'is-invalid': editVideoForm.get('visibility')?.hasError('required') && editVideoForm.get('visibility')?.touched}">
+                                <option value="" selected>Seleccione una opción</option>
+                                <option value="public">Pública</option>
+                                <option value="private">Privada</option>
+                            </select>
+                            <div class="validators"
+                                *ngIf="editVideoForm.get('visibility')?.hasError('required') && editVideoForm.get('visibility')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+                        <!--Fecha de creación-->
+                        <div class="mb-4 col-12 col-md-4">
+                            <label class="mb-1"><b>Fecha de creación</b></label>
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="createdAt" placeholder="Fecha de creación*" [ngClass]="{
+                                'is-invalid': editVideoForm.get('createdAt')?.hasError('required') && editVideoForm.get('createdAt')?.touched || editVideoForm.get('createdAt')?.hasError('pattern')
+                            }" [maxlength]="2" readonly>
+                            <div class="validators"
+                                *ngIf="editVideoForm.get('createdAt')?.hasError('required') && editVideoForm.get('createdAt')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" *ngIf="editVideoForm.get('createdAt')?.hasError('pattern')">
+                                <small>¡Solo se permiten números!</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!--URL-->
+                    <div class="row">
+                        <div class="col-12 mb-4">
+                            <label class="mb-1"><b>URL</b></label>
+                            <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                formControlName="url" placeholder="URL*" [ngClass]="{
+                                'is-invalid': editVideoForm.get('url')?.hasError('required') && editVideoForm.get('url')?.touched || editVideoForm.get('url')?.hasError('pattern')
+                            }" [maxlength]="100" readonly>
+                            <div class="validators"
+                                *ngIf="editVideoForm.get('url')?.hasError('required') && editVideoForm.get('url')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                            <div class="validators" *ngIf="editVideoForm.get('url')?.hasError('pattern')">
+                                <small>¡Solo se permiten letras!</small>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Descripcipon (pasos)-->
+                    <div class="row">
+                        <div class="mb-3">
+                            <label class="mb-1"><b>Descripción</b></label>
+                            <textarea class="form-control form-control-lg bg-light fs-6" formControlName="description"
+                                placeholder="Descripción*" rows="7" [ngClass]="{
+                                'is-invalid': editVideoForm.get('description')?.hasError('required') && editVideoForm.get('description')?.touched
+                            }" [maxlength]="600"></textarea>
+                            <div class="validators"
+                                *ngIf="editVideoForm.get('description')?.hasError('required') && editVideoForm.get('description')?.touched">
+                                <small>¡Este campo es requerido!</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons mb-3">
+                        <!--Botones de regresar y registrar tarea-->
+                        <div class="action-buttons mb-3">
+                            <button mat-button (click)="editVideoDetail()" type="button"
+                                class="btn btn-primary btn-md">Aceptar</button>
+                            <button mat-button [routerLink]="'../list-videos'" type="button"
+                                class="btn btn-danger btn-md">Cancelar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,90 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="div col-12 mt-3 mx-1">
+                <h4 id="title"><fa-icon [icon]="iconViewProgress" class="icon-title"></fa-icon> Progreso de asignaciones
+                </h4>
+            </div>
+
+            <!--Formulario para buscar paciente y filtrar tareas-->
+            <form [formGroup]="patientForm" class="row mt-4">
+                <!--Apellidos (Buscar)-->
+                <div class="col-12 col-md-5 mb-3">
+                    <label class="mb-1"><b>Apellidos y Nombres</b></label>
+                    <input type="text" placeholder="Buscar..." [matAutocomplete]="auto"
+                        class="form-control form-control-lg bg-light fs-6" (focus)="onFocus()"
+                        (input)="onSearch($event)" formControlName="names" />
+                    <mat-autocomplete #auto="matAutocomplete"
+                        [ngClass]="{
+                        'is-invalid': patientForm.get('names')?.hasError('required') && patientForm.get('names')?.touched || patientForm.get('names')?.hasError('pattern')}">
+                        <mat-option *ngFor="let patientName of filteredPatientsNames"
+                            [value]="patientName.lastName + ' ' + patientName.firstName"
+                            (click)="getInfoTasksAssigns(patientName.id)">
+                            {{ patientName.lastName + ' ' + patientName.firstName }}
+                        </mat-option>
+                        <mat-option *ngIf="filteredPatientsNames.length === 0" [value]="'Sin resultados'">
+                            Sin resultados...
+                        </mat-option>
+                    </mat-autocomplete>
+                    <div class="validators" *ngIf="patientForm.get('names')?.hasError('pattern')">
+                        <small>¡Solo se permiten letras!</small>
+                    </div>
+                </div>
+            </form>
+
+            <!--Tabla con la lista de las tareas asignadas-->
+            <div class="card" id="htmlTablePDF">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                    style="position: relative;">
+                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">N°</th>
+                                <th scope="col">Título</th>
+                                <th scope="col">Tiempo estimado</th>
+                                <th scope="col">Fecha de vencimiento</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="arrayAssignsTasks.length > 0; else noResults">
+                                <tr *ngFor="let task of arrayAssignsTasks | slice:initialPage:finalPage; let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td data-bs-toggle="mensaje" title="{{task.task.title}}">
+                                        {{task.task.title}}
+                                    </td>
+                                    <td>{{task.task.estimatedTime}} minutos</td>
+                                    <td>{{task.dueDate}}</td>
+                                    <td class="acciones">
+                                        <fa-icon (click)="openModalViewTaskDetailAssign(viewTaskDetailAssign, task.id)" 
+                                        data-bs-toggle="mensaje" title="Ver detalles" id="iconVerDetalles"
+                                        [icon]="iconViewDetails"></fa-icon>
+                                        <fa-icon (click)="deleteTask(task.id, task.task.title)"
+                                        data-bs-toggle="mensaje" title="Eliminar asignación" id="iconEliminar"
+                                        [icon]="iconDelete"></fa-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <!--Para cuando no cargue la data-->
+                            <ng-template #noResults>
+                                <tr>
+                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                </tr>
+                            </ng-template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Paginación-->
+            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="itemsForPage"
+                [length]="arrayAssignsTasks.length" (page)="changePage($event)"></mat-paginator>
+        </div>
+    </div>
+</body>
+
+<!--Modal para ver lel detalle de la tarea asignada-->
+<ng-template #viewTaskDetailAssign>
+    <app-view-detail-progress-my-patients></app-view-detail-progress-my-patients>
+</ng-template>

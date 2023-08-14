@@ -1,0 +1,111 @@
+<div class="container">
+    <div class="modal-header">
+        <h4 class="modal-title"><fa-icon [icon]="iconTask"></fa-icon> Detalle de tarea</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Título</b></label>
+                    <p *ngIf="taskDetail.title!='--'; else noResults">{{taskDetail.title}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Visibilidad</b></label>
+                    <p class="iconsPublicPrivate"> <fa-icon
+                            [icon]="taskDetail.isPublic ? iconPublic : iconPrivate"></fa-icon> {{taskDetail.isPublic ?
+                        "Pública" :
+                        " Privada"}}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Categoría</b></label>
+                    <p *ngIf="taskDetail.categories[0].name != '--'; else noResults">{{taskDetail.categories[0].name}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Tiempo estimado</b></label>
+                    <p *ngIf="taskDetail.estimatedTime!=0; else noResults">{{taskDetail.estimatedTime}} minutos</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Fecha de creación</b></label>
+                    <p *ngIf="taskDetail.createdAt!='--'; else noResults">{{taskDetail.createdAt}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Fecha de actualización</b></label>
+                    <p *ngIf="taskDetail.updatedAt!='--'; else noResults">{{taskDetail.updatedAt}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4" *ngIf="taskDetail.files.length > 0; else noVideos">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Videos registrados</b></label>
+                    <p *ngFor="let video of taskDetail.files; let i = index">[{{i+1}}] {{video.title}}</p>
+                </div>
+                <ng-template class="info mb-4" #noVideos>
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Videos registrados</b></label>
+                    <p>Esta tarea no tiene videos asignados</p>
+                </ng-template>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Descripción</b></label>
+                    <p *ngIf="taskDetail.description!='--'; else noResults">{{taskDetail.description}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="modal.dismissAll()" type="button" class="btn btn-primary btn">Aceptar</button>
+    </div>
+</div>

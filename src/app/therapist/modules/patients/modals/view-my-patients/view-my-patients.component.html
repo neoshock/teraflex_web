@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="modal-header">
+        <h4 class="modal-title"><fa-icon [icon]="iconPatient"></fa-icon> Detalle de paciente</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Apellidos y nombres</b></label>
+                    <p>{{patientDetail.firstName + " " + patientDetail.lastName}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Cédula</b></label>
+                    <p>{{patientDetail.docNumber}}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Teléfono</b></label>
+                    <p>{{patientDetail.phone}}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Edad</b></label>
+                    <p>{{patientDetail.birthDate}} + años</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Fecha de creación</b></label>
+                    <p>{{patientDetail.createdAt}}</p>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Fecha de actualización</b></label>
+                    <p>{{patientDetail.updatedAt}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Descripción</b></label>
+                    <p>{{patientDetail.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button (click)="modal.dismissAll()" type="button" class="btn btn-next btn" style="border-radius: 50px;">Aceptar</button>
+    </div>
+</div>

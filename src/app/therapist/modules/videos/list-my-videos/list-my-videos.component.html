@@ -1,0 +1,102 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="div mt-3 mx-1">
+                <h4 id="titulo"><fa-icon [icon]="iconUploadVideo" class="icon-title"></fa-icon> Mis videos</h4>
+                <button [routerLink]="'../upload-video'" type="button" class="btn btn-primary btn-sm"> <fa-icon
+                        [icon]="iconAdd"></fa-icon> Subir video</button>
+            </div>
+            <br />
+            <!--Campos para filtrar y buscar-->
+            <div class="parent-container">
+                <div class="inputs-form">
+                    <!--Filtrar los videos por activos o inactivos-->
+                    <form id="select">
+                        <select class="form-select" aria-label="Default select example" style="margin-bottom: 12px;"
+                            (change)="onFilterChange($event)">
+                            <option value="true" selected>Activos</option>
+                            <option value="false">Inactivos</option>
+                        </select>
+                    </form>
+                    <!--Buscar los video por título-->
+                    <form id="search">
+                        <input class="form-control me-1" type="text" placeholder="Buscar..." name="buscarMovimientos"
+                            [(ngModel)]="videosToSearch">
+                    </form>
+                    <!--Botones para exportar en .pdf y .xlsx-->
+                    <div class="export-buttons mb-3">
+                        <button (click)="downloadPDF()" type="button" class="btn save-pdf" data-bs-toggle="mensaje"
+                            title="Exportar a PDF">
+                            <fa-icon [icon]="iconPdf"></fa-icon>
+                        </button>
+                        <button (click)="downloadXLSX()" type="button" class="btn save-xlsx" data-bs-toggle="mensaje"
+                            title="Exportar a XLSX">
+                            <fa-icon [icon]="iconXlsx"></fa-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!--Tabla con el listado de videos-->
+            <div class="card" id="htmlTablePDF">
+                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                    style="position: relative;">
+                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">N°</th>
+                                <th scope="col">Título</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Visibilidad</th>
+                                <th scope="col">Fecha creación</th>
+                                <th scope="col">URL</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngIf="arrayVideos.length > 0; else noResults">
+                                <tr
+                                    *ngFor="let video of arrayVideos | slice:initialPage:finalPage | searchRegisters:videosToSearch:optionFilter; let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td data-bs-toggle="mensaje" title="{{video.title}}">{{video.title}}</td>
+                                    <td>{{video.type}}</td>
+                                    <td class="iconPublicPrivate">
+                                        <fa-icon [icon]="video.isPublic ? iconPublic : iconPrivate"></fa-icon>
+                                        {{video.isPublic ? "Público" : " Privado"}}
+                                    </td>
+                                    <td>{{video.createdAt}}</td>
+                                    <td data-bs-toggle="mensaje" title="{{video.url}}">{{video.url}}</td>
+                                    <td class="acciones">
+                                        <fa-icon (click)="openModalViewVideoDetail(viewVideoDetail, video, video.type)"
+                                            data-bs-toggle="mensaje" title="Ver detalles" id="iconVerDetalles"
+                                            [icon]="iconViewDetails"></fa-icon>
+                                        <fa-icon (click)="goToEditVideo(video)" data-bs-toggle="mensaje" title="Editar"
+                                            id="iconEditar" *ngIf="statusVideo" [icon]="iconEdit"></fa-icon>
+                                        <fa-icon (click)="desactivateVideo(video.id, video.title)"
+                                            data-bs-toggle="mensaje" title="Desactivar" id="iconEliminar"
+                                            *ngIf="statusVideo" [icon]="iconActivate"></fa-icon>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <ng-template #noResults>
+                                <tr>
+                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                </tr>
+                            </ng-template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Paginación-->
+            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]" [pageSize]="itemsForPage"
+                [length]="arrayVideos.length" (page)="changePage($event)"></mat-paginator>
+        </div>
+    </div>
+</body>
+
+<!--Modal para ver los detalles del video-->
+<ng-template #viewVideoDetail>
+    <app-view-my-videos></app-view-my-videos>
+</ng-template>

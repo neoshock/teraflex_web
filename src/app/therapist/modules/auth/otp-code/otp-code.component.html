@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="modal-header">
+        <h4 class="modal-title"><fa-icon [icon]="iconConfirm"></fa-icon> Confirmar identidad</h4>
+    </div>
+
+    <div class="modal-body">
+        <p>Por favor ingrese el código de 6 dígitos enviado a su correo electrónico para confirmar el cambio de contraseña.</p>
+        <div class="container">
+            <div class="input-otp-code">
+                <input type="text" maxlength="1" pattern="[0-9]" />
+                <input type="text" maxlength="1" pattern="[0-9]" />
+                <input type="text" maxlength="1" pattern="[0-9]" />
+                <input type="text" maxlength="1" pattern="[0-9]" />
+                <input type="text" maxlength="1" pattern="[0-9]" />
+                <input type="text" maxlength="1" pattern="[0-9]" />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button (click)="confirmOtpCode()" type="button" class="btn btn-next btn">Confirmar</button>
+    </div>
+</div>

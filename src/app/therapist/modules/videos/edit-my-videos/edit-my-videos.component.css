@@ -1,0 +1,18 @@
+.action-buttons {
+    text-align: end;
+}
+
+.btn-danger {
+    border-radius: 50px;
+}
+
+.btn-primary {
+    margin-right: 10px;
+}
+
+input[readonly] {
+    background-color: #f0f0f0 !important;
+    color: #6b6b6b;
+    border-color: #dbdbdb;
+    cursor: not-allowed;
+}

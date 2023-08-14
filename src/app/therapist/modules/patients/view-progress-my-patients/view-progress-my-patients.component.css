@@ -1,0 +1,12 @@
+.btn-secondary {
+    margin-right: 10px;
+    border-radius: 50px;
+}
+
+.validators {
+    color: #FC3B56;
+}
+
+#iconEliminar{
+    margin-left: 10px !important;
+}

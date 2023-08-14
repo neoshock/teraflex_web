@@ -1,0 +1,203 @@
+body {
+  border-radius: 8px;
+  height: auto;
+  padding: 0 0 10px 0;
+}
+
+.container-info{
+  padding: .5rem 2rem;
+}
+
+.icon-title{
+  color: #007BBD !important; 
+}
+
+.div{
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-primary{
+  border-radius: 50px;
+  background-color: #007BBD !important;
+}
+
+.save-pdf, .save-xlsx{
+  background-color: transparent;
+  border: 1px solid #007BBD !important;
+  color: #007BBD !important;
+}
+
+#iconEditar, #iconVerDetalles, #iconEliminar{
+  font-size: 1rem !important;
+  margin-right: 7px;
+  cursor: pointer;
+}
+
+#iconVerDetalles{
+  color: #007BBD;
+}
+
+#iconEliminar{
+  color: #FC3B56;
+}
+
+.no-results{
+  text-align: center;
+  background-color: #fafafa;
+}
+
+.iconPublicPrivate>fa-icon{
+  color: #bebebe;
+}
+
+/*Tabla con datos*/
+table td,
+table th {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+thead th {
+  background-color: #9CD3DD !important;
+  color: #474747;
+}
+
+.card {
+  border-radius: .2rem;
+}
+
+.table-scroll {
+  border-radius: .2rem;
+}
+
+.table-scroll table thead th {
+  font-size: .9rem;
+}
+
+th,
+td {
+  font-size: .8rem;
+}
+
+thead {
+  top: 0;
+  position: sticky;
+}
+
+/* Ajusta el ancho para la columna "Título" */
+#htmlExcelTable td:nth-child(2),
+#htmlExcelTable th:nth-child(2) {
+  max-width: 200px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+#checkbox {
+  margin-left: 17px;
+}
+
+/*Diseño del encabezado buscar*/
+.parent-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.parent-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputs-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-content: space-between;
+}
+
+#search {
+  flex: 1;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.save-pdf {
+  margin-right: 20px;
+}
+
+
+/*Para los botones de las acciones*/
+#iconEditar {
+  margin-left: 7px;
+  margin-right: 15px;
+  font-size: 20px;
+  color: rgb(64, 140, 202);
+}
+
+#iconEliminar {
+  font-size: 20px;
+  color: rgb(243, 36, 36);
+}
+
+/*Responsive Web Design*/
+@media screen and (max-width: 760px) {
+  #title {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .div{
+    display: block;
+  }
+
+  .div .btn-primary{
+    width: 100%;
+    margin-bottom: 7px;
+  }
+
+  #subtitulo {
+    font-size: 15;
+    margin-bottom: 8px;
+  }
+
+  .export-buttons {
+    width: 100%;
+    text-align: center;
+  }
+
+  .export-buttons .save-pdf {
+    width: 46%;
+  }
+
+  .export-buttons .save-xlsx {
+    width: 46%;
+  }
+
+  #paginacion {
+    font-size: 13px;
+  }
+
+  /*Responsive del encabezado buscar*/
+  .parent-container {
+    display: inline-block;
+  }
+
+  .parent-container {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .inputs-form {
+    display: inline-block;
+
+    width: 100%;
+  }
+
+  #search {
+    margin-bottom: 20px;
+   margin-left: 0px;
+    width: 100%;
+  }
+}

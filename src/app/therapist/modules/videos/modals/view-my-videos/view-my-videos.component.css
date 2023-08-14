@@ -1,0 +1,47 @@
+[type="button"] {
+    background-color: #007BBD !important;
+    color: #FFF;
+    border-radius: 50px;
+}
+
+[type="button"]:hover {
+    border-color: #007BBD;
+    box-shadow: 0 0 0 2px #6fc7f7;
+    color: #FFF;
+}
+
+fa-icon {
+    color: #007BBD;
+}
+
+.iconsPublicPrivate>fa-icon {
+    color: #bebebe;
+}
+
+.centered-video-youtube {
+    width: 470px; 
+    height: 265px;
+    margin: 0 auto;
+    display: block;
+}
+
+.centered-video-local{
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+}
+
+video, iframe{
+    margin-top: 7px;
+    border-radius: 10px;
+}
+
+/*-------------Responsive Web Design------------*/
+@media screen and (max-width: 768px){
+    .centered-video-youtube {
+        width: 270px; 
+        height: 165px;
+        margin: 0 auto;
+        display: block;
+    }
+}

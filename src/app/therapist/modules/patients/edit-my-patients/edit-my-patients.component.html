@@ -1,0 +1,115 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="col-12 mt-3 mx-1">
+                <h4 id="titulo"><fa-icon [icon]="iconEditPatient" class="icon-title"></fa-icon> Editar paciente</h4>
+            </div>
+
+            <form [formGroup]="editPatientForm">
+                <div class="row mt-4">
+                    <!--Apellidos-->
+                    <div class="col-12 col-md-6 mb-3">
+                        <label class="mb-1"><b>Apellidos</b></label>
+                        <input type="text" placeholder="Apellidos*" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="lastName" [ngClass]="{
+                                'is-invalid': editPatientForm.get('lastName')?.hasError('required') && editPatientForm.get('lastName')?.touched || editPatientForm.get('lastName')?.hasError('pattern'),}"
+                                [maxlength]="50" />
+                        <div class="validators"
+                            *ngIf="editPatientForm.get('lastName')?.hasError('required') && editPatientForm.get('lastName')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="editPatientForm.get('lastName')?.hasError('pattern')">
+                            <small>¡Solo se permiten letras!</small>
+                        </div>
+                    </div>
+                    <!--Nombres-->
+                    <div class="col-12 col-md-6 mb-3">
+                        <label class="mb-1"><b>Nombres</b></label>
+                        <input type="text" placeholder="Nombres*" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="firstName" [ngClass]="{
+                                'is-invalid': editPatientForm.get('firstName')?.hasError('required') && editPatientForm.get('firstName')?.touched || editPatientForm.get('firstName')?.hasError('pattern')}"
+                                [maxlength]="50" />
+                        <div class="validators"
+                            *ngIf="editPatientForm.get('firstName')?.hasError('required') && editPatientForm.get('firstName')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="editPatientForm.get('firstName')?.hasError('pattern')">
+                            <small>¡Solo se permiten letras!</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--Cédula-->
+                    <div class="col-12 col-md-4 mb-3">
+                        <label class="mb-1"><b>Cédula</b></label>
+                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="docNumber" placeholder="Cédula*"
+                            [ngClass]="{
+                                'is-invalid': editPatientForm.get('docNumber')?.hasError('required') && editPatientForm.get('docNumber')?.touched || editPatientForm.get('docNumber')?.hasError('pattern')}"
+                            [maxlength]="10" readonly>
+                        <div class="validators"
+                            *ngIf="editPatientForm.get('docNumber')?.hasError('required') && editPatientForm.get('docNumber')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="editPatientForm.get('docNumber')?.hasError('pattern')">
+                            <small>¡Solo se permiten números!</small>
+                        </div>
+                    </div>
+                    <!--Fecha de nacimiento-->
+                    <div class="col-12 col-md-4 mb-3">
+                        <label class="mb-1"><b>Fecha de nacimiento</b></label>
+                        <input type="date" class="form-control form-control-lg bg-light fs-6"
+                            formControlName="birthDate" placeholder="Fecha de nacimiento*"
+                            [ngClass]="{
+                                'is-invalid': editPatientForm.get('birthDate')?.hasError('required') && editPatientForm.get('birthDate')?.touched}"
+                                readonly>
+                        <div class="validators"
+                            *ngIf="editPatientForm.get('birthDate')?.hasError('required') && editPatientForm.get('birthDate')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                    </div>
+                    <!--Teléfono-->
+                    <div class="col-12 col-md-4 mb-3">
+                        <label class="mb-1"><b>Teléfono</b></label>
+                        <input type="text" class="form-control form-control-lg bg-light fs-6" formControlName="phone"
+                            placeholder="Teléfono*"
+                            [ngClass]="{
+                                'is-invalid': editPatientForm.get('phone')?.hasError('required') && editPatientForm.get('phone')?.touched || editPatientForm.get('phone')?.hasError('pattern')}"
+                            [maxlength]="10">
+                        <div class="validators"
+                            *ngIf="editPatientForm.get('phone')?.hasError('required') && editPatientForm.get('phone')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                        <div class="validators" *ngIf="editPatientForm.get('phone')?.hasError('pattern')">
+                            <small>¡Solo se permiten números!</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!--Descripción-->
+                    <div class="col-12 mb-3">
+                        <label class="mb-1"><b>Descripción</b></label>
+                        <textarea class="form-control form-control-lg bg-light fs-6" formControlName="description"
+                            placeholder="Descripción*" rows="7"
+                            [ngClass]="{
+                                'is-invalid': editPatientForm.get('description')?.hasError('required') && editPatientForm.get('description')?.touched || editPatientForm.get('description')?.hasError('pattern')}">
+                            </textarea>
+                        <div class="validators"
+                            *ngIf="editPatientForm.get('phone')?.hasError('required') && editPatientForm.get('phone')?.touched">
+                            <small>¡Este campo es requerido!</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons mb-3">
+                    <button (click)="editMyPatient()" [disabled]="!editPatientForm.valid" mat-button type="button"
+                        class="btn btn-primary btn-md">Guardar</button>
+                    <button [routerLink]="'../my-patients'" mat-button type="button"
+                        class="btn btn-danger btn-md">Cancelar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</body>

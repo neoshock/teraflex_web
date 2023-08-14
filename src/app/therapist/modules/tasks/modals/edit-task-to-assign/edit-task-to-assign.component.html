@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="modal-header">
+        <h4 class="modal-title"><fa-icon [icon]="iconTask"></fa-icon> Editar detalle de tarea</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="taskDetailForm">
+            <div class="row">
+                <!--Título-->
+                <div class="col-12 col-md-9 mb-3">
+                    <label class="mb-1"><b>Título</b></label>
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" formControlName="title"
+                        placeholder="Título*" readonly>
+                </div>
+                <!--Tiempo estimado-->
+                <div class="col-12 col-md-3 mb-3">
+                    <label class="mb-1"><b>Tiempo estimado</b></label>
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" formControlName="estimatedTime"
+                        placeholder="Tiempo estimado*">
+                </div>
+            </div>
+            <div class="row">
+                <!--Descripción-->
+                <div class="col-12 mb-3">
+                    <label class="mb-1"><b>Descripción</b></label>
+                    <textarea class="form-control form-control-lg bg-light fs-6" formControlName="description"
+                        placeholder="Descripción*" rows="7"></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" (click)="addTaskEdited()" class="btn btn-next btn">Aceptar</button>
+        <button (click)="modal.dismissAll()" class="btn btn-danger" type="button"><fa-icon></fa-icon> Cancelar</button>
+    </div>
+</div>

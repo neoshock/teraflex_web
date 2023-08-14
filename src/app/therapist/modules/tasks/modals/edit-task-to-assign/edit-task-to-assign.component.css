@@ -1,0 +1,23 @@
+.btn-next{
+    background-color: #007BBD !important;
+    color: #FFF;
+    border-radius: 50px;
+}
+
+.btn-next:hover {
+    border-color: #007BBD;
+    box-shadow: 0 0 0 2px #6fc7f7;
+    color: #FFF;
+}
+
+fa-icon {
+    color: #007BBD;
+}
+
+.iconsPublicPrivate>fa-icon {
+    color: #bebebe;
+}
+
+.btn-danger{
+    border-radius: 50px;
+}

@@ -1,0 +1,119 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+  <div class="row justify-content-center">
+    <div class="col-12 container-info">
+      <div class="div mt-3 mx-1">
+        <h4 id="titulo"><fa-icon [icon]="iconMyProfile" class="icon-title"></fa-icon> Mi perfil</h4>
+      </div>
+
+      <div class="row mt-3">
+        <!--Card con información del Nombre y departamento-->
+        <div class="col-lg-4">
+          <div class="card mb-4" style="background-color: #eee;">
+            <div class="card-body text-center">
+              <img src="../../../../../assets/pictures/user-profile.jpg" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 125px;" id="img-profile">
+              <h4 class="my-3">{{detailInfoTerapist.firstName + " " + detailInfoTerapist.lastName}}</h4>
+              <p class="mb-1">Terapeuta especializado <fa-icon [icon]="iconVerified" class="icon-title"></fa-icon></p>
+              <p class="text-muted mb-4"><i>{{detailInfoTerapist.categoryName}}</i></p>
+              <div class="d-flex justify-content-center mb-2">
+               <!--  <button type="button" class="btn btn-primary">Editar</button> -->
+               <p class="text-muted mb-1">Dirección de Gestión de Desarrollo Social de Quevedo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          <!--Card de información personal-->
+          <div class="card mb-4" style="background-color: #eee;">
+            <div class="card-body">
+              <h5 class="mb-4"> <fa-icon [icon]="iconInformation" class="icon-title"></fa-icon> <b> Información básica</b></h5>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="mb-0 info">Nombres</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{detailInfoTerapist.firstName + " " + detailInfoTerapist.lastName}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="mb-0 info">Teléfono</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{detailInfoTerapist.phone}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="mb-0 info">Edad</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{detailInfoTerapist.birthDate}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="mb-0 info">Fecha de inscripción</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{detailInfoTerapist.createdAt}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="mb-0 info">Departamento</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{detailInfoTerapist.categoryName}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-4">
+                  <p class="mb-0 info">Descripción</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{detailInfoTerapist.description}}</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!--Card de estadísticas-->
+          <div class="col-md-12">
+            <div class="card mb-4 mb-md-0" style="background-color: #eee;">
+              <div class="card-body">
+                <h5 class="mb-4"> <fa-icon [icon]="iconStatistics" class="icon-title"></fa-icon> <b> Estadísticas</b></h5>
+                <div class="row awards-container">
+                  <div class="col-6 col-lg-3 circle">
+                    <label class="category">Pacientes</label><br/>
+                    <label class="award mt-2 ">20</label>
+                  </div>
+                  <div class="col-6 col-lg-3 circle">
+                    <label class="category">Tareas</label><br/>
+                    <label class="award mt-2">30</label>
+                  </div>
+                  <div class="col-6 col-lg-3 circle">
+                    <label class="category">Recursos</label><br/>
+                    <label class="award mt-2">3</label>
+                  </div>
+                  <div class="col-6 col-lg-3 circle">
+                    <label class="category">Asignaciones</label><br/>
+                    <label class="award mt-2">53</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

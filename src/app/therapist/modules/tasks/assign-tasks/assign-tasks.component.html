@@ -1,0 +1,327 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="col-12 mt-3 mx-1">
+                <h4 id="title"><fa-icon [icon]="iconAssignTasks" class="icon-title"></fa-icon> Asignar tarea</h4>
+            </div>
+            <!--Stepper-->
+            <div class="row mt-4">
+                <!--Stepper horizontal en vista de computadoras-->
+                <ng-container *ngIf="!isMobileView else mobileView">
+                    <mat-horizontal-stepper linear #stepper="matHorizontalStepper">
+                        <!--Paso 1: Seleccionar el paciente-->
+                        <mat-step [stepControl]="patientForm">
+                            <form [formGroup]="patientForm">
+                                <ng-template matStepLabel>Datos del paciente</ng-template>
+                                <div class="row">
+                                    <!--Apellidos (Buscar)-->
+                                    <div class="col-12 col-md-12 mb-3">
+                                        <label class="mb-1"><b>Nombres y Apellidos</b></label>
+                                        <input type="text" placeholder="Apellidos*" [matAutocomplete]="auto"
+                                            class="form-control form-control-lg bg-light fs-6" (focus)="onFocus()"
+                                            (input)="onSearch($event)" formControlName="names" />
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let patientName of filteredPatientsNames"
+                                                [value]="patientName.lastName + ' ' + patientName.firstName"
+                                                (click)="getInfoDetailPatient(patientName.id)">
+                                                {{ patientName.lastName + ' ' + patientName.firstName }}
+                                            </mat-option>
+                                            <mat-option *ngIf="filteredPatientsNames.length === 0"
+                                                [value]="'Sin resultados'">
+                                                Sin resultados...
+                                            </mat-option>
+                                        </mat-autocomplete>
+
+                                        <div class="validators"
+                                            *ngIf="patientForm.get('lastName')?.hasError('required') && patientForm.get('lastName')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                        <div class="validators"
+                                            *ngIf="patientForm.get('lastName')?.hasError('pattern')">
+                                            <small>¡Solo se permiten letras!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Cédula-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Cédula</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="docNumber" placeholder="Cédula*" readonly>
+                                    </div>
+                                    <!--Fecha de nacimiento-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Edad</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="age" placeholder="Edad*" readonly>
+                                    </div>
+                                    <!--Teléfono-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Teléfono</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="phone" placeholder="Teléfono*" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Descripción-->
+                                    <div class="col-12 mb-3">
+                                        <label class="mb-1"><b>Descripción</b></label>
+                                        <textarea class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="description" placeholder="Descripción*" rows="7"
+                                            readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="action-buttons mb-3">
+                                    <button [disabled]="!patientForm.valid" mat-button type="button"
+                                        class="btn btn-primary btn-md" (click)="nextStepAssignTasks()">Siguiente
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <!--Paso 2: Seleccionar tareas para asignar-->
+                        <mat-step [stepControl]="assignTasksForm">
+                            <ng-template matStepLabel>Asignar tareas</ng-template>
+                            <form [formGroup]="assignTasksForm">
+                                <div class="row mb-3">
+                                    <small><i>Seleccione una o más tareas para asignar a su paciente. Adicionalmente
+                                            agregue una fecha de vencimiento en la que el paciente debe cumplir las
+                                            tareas asignadas.</i></small>
+                                </div>
+                                <div class="row">
+                                    <!--Fecha de vencimiento-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Fecha de vencimiento</b></label>
+                                        <input type="date" placeholder="Fecha de vencimiento*"
+                                            class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="dueDate" />
+                                    </div>
+                                    <!--Buscar tareas por titulo-->
+                                    <form class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Filtrar búsqueda</b></label>
+                                        <input class="form-control me-1" type="text" placeholder="Buscar..."
+                                            name="tasksToSearch" [(ngModel)]="tasksToSearch">
+                                    </form>
+                                </div>
+                            </form>
+
+                            <!--Tabla con la lista de las tareas-->
+                            <div class="card" id="htmlTablePDF">
+                                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                                    style="position: relative;">
+                                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">N°</th>
+                                                <th scope="col">Asignar</th>
+                                                <th scope="col">Título</th>
+                                                <th scope="col">Tiempo estimado</th>
+                                                <th scope="col">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngIf="arrayTasks.length > 0; else noResults">
+                                                <tr
+                                                    *ngFor="let task of arrayTasks | slice:initialPage:finalPage | searchRegisters:tasksToSearch:optionFilter; let i = index">
+                                                    <th scope="row">{{i+1}}</th>
+                                                    <td><input type="checkbox"
+                                                            [checked]="arrayTasksId.includes(task.id)"
+                                                            (change)="addOrRemoveVideoId(task)"
+                                                            (click)="addArrayToSend(task)"></td>
+                                                    <td>{{task.title}}</td>
+                                                    <td>{{task.estimatedTime}} minutos</td>
+                                                    <td class="acciones">
+                                                        <button mat-button [disabled]="task.disabled"
+                                                            (click)="openModalEditTaskToAssign(editTaskToAssign, task.id)"
+                                                            type="button" class="btn btn-primary btn-sm">Editar</button>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            <!--Para cuando no cargue la data-->
+                                            <ng-template #noResults>
+                                                <tr>
+                                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                                </tr>
+                                            </ng-template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Paginación-->
+                            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]"
+                                [pageSize]="itemsForPage" [length]="arrayTasks.length"
+                                (page)="changePage($event)"></mat-paginator>
+                            <!--Botones de regresar y registrar tarea-->
+                            <div class="action-buttons mb-3">
+                                <button mat-button matStepperPrevious type="button"
+                                    class="btn btn-secondary btn-md">Regresar</button>
+                                <button mat-button (click)="registerAssignTaskToUser()" type="button"
+                                    class="btn btn-primary btn-md">Guardar</button>
+                            </div>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+                </ng-container>
+                <!--Stepper cambia a vertical cuando la vista pasa a un dispositivo móvil-->
+                <ng-template #mobileView>
+                    <mat-vertical-stepper linear #stepper="matVerticalStepper">
+                        <!--Paso 1: Seleccionar el paciente-->
+                        <mat-step [stepControl]="patientForm">
+                            <form [formGroup]="patientForm">
+                                <ng-template matStepLabel>Datos del paciente</ng-template>
+                                <div class="row">
+                                    <!--Apellidos (Buscar)-->
+                                    <div class="col-12 col-md-12 mb-3">
+                                        <label class="mb-1"><b>Nombres y Apellidos</b></label>
+                                        <input type="text" placeholder="Apellidos*" [matAutocomplete]="auto"
+                                            class="form-control form-control-lg bg-light fs-6" (focus)="onFocus()"
+                                            (input)="onSearch($event)" formControlName="names" />
+                                        <mat-autocomplete #auto="matAutocomplete">
+                                            <mat-option *ngFor="let patientName of filteredPatientsNames"
+                                                [value]="patientName.lastName + ' ' + patientName.firstName"
+                                                (click)="getInfoDetailPatient(patientName.id)">
+                                                {{ patientName.lastName + ' ' + patientName.firstName }}
+                                            </mat-option>
+                                            <mat-option *ngIf="filteredPatientsNames.length === 0"
+                                                [value]="'Sin resultados'">
+                                                Sin resultados...
+                                            </mat-option>
+                                        </mat-autocomplete>
+
+                                        <div class="validators"
+                                            *ngIf="patientForm.get('lastName')?.hasError('required') && patientForm.get('lastName')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                        <div class="validators"
+                                            *ngIf="patientForm.get('lastName')?.hasError('pattern')">
+                                            <small>¡Solo se permiten letras!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Cédula-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Cédula</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="docNumber" placeholder="Cédula*" readonly>
+                                    </div>
+                                    <!--Fecha de nacimiento-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Edad</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="age" placeholder="Edad*" readonly>
+                                    </div>
+                                    <!--Teléfono-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Teléfono</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="phone" placeholder="Teléfono*" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Descripción-->
+                                    <div class="col-12 mb-3">
+                                        <label class="mb-1"><b>Descripción</b></label>
+                                        <textarea class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="description" placeholder="Descripción*" rows="7"
+                                            readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="action-buttons mb-3">
+                                    <button [disabled]="!patientForm.valid" mat-button type="button"
+                                        class="btn btn-primary btn-md" (click)="nextStepAssignTasks()">Siguiente
+                                    </button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <!--Paso 2: Seleccionar tareas para asignar-->
+                        <mat-step [stepControl]="assignTasksForm">
+                            <ng-template matStepLabel>Asignar tareas</ng-template>
+                            <form [formGroup]="assignTasksForm">
+                                <div class="row mb-3">
+                                    <small><i>Seleccione una o más tareas para asignar a su paciente. Adicionalmente
+                                            agregue una fecha de vencimiento en la que el paciente debe cumplir las
+                                            tareas asignadas.</i></small>
+                                </div>
+                                <div class="row">
+                                    <!--Fecha de vencimiento-->
+                                    <div class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Fecha de vencimiento</b></label>
+                                        <input type="date" placeholder="Fecha de vencimiento*"
+                                            class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="dueDate" />
+                                    </div>
+                                    <!--Buscar tareas por titulo-->
+                                    <form class="col-12 col-md-4 mb-3">
+                                        <label class="mb-1"><b>Filtrar búsqueda</b></label>
+                                        <input class="form-control me-1" type="text" placeholder="Buscar..."
+                                            name="tasksToSearch" [(ngModel)]="tasksToSearch">
+                                    </form>
+                                </div>
+                            </form>
+
+                            <!--Tabla con la lista de las tareas-->
+                            <div class="card" id="htmlTablePDF">
+                                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                                    style="position: relative;">
+                                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">N°</th>
+                                                <th scope="col">Asignar</th>
+                                                <th scope="col">Título</th>
+                                                <th scope="col">Tiempo estimado</th>
+                                                <th scope="col">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngIf="arrayTasks.length > 0; else noResults">
+                                                <tr
+                                                    *ngFor="let task of arrayTasks | slice:initialPage:finalPage | searchRegisters:tasksToSearch:optionFilter; let i = index">
+                                                    <th scope="row">{{i+1}}</th>
+                                                    <td><input type="checkbox"
+                                                            [checked]="arrayTasksId.includes(task.id)"
+                                                            (change)="addOrRemoveVideoId(task)"
+                                                            (click)="addArrayToSend(task)"></td>
+                                                    <td>{{task.title}}</td>
+                                                    <td>{{task.estimatedTime}} minutos</td>
+                                                    <td class="acciones">
+                                                        <button mat-button [disabled]="task.disabled"
+                                                            (click)="openModalEditTaskToAssign(editTaskToAssign, task.id)"
+                                                            type="button" class="btn btn-primary btn-sm">Editar</button>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            <!--Para cuando no cargue la data-->
+                                            <ng-template #noResults>
+                                                <tr>
+                                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                                </tr>
+                                            </ng-template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Paginación-->
+                            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]"
+                                [pageSize]="itemsForPage" [length]="arrayTasks.length"
+                                (page)="changePage($event)"></mat-paginator>
+                            <!--Botones de regresar y registrar tarea-->
+                            <div class="action-buttons mb-3">
+                                <button mat-button matStepperPrevious type="button"
+                                    class="btn btn-secondary btn-md col-sm-12 mb-2">Regresar</button>
+                                <button mat-button (click)="registerAssignTaskToUser()" type="button"
+                                    class="btn btn-primary btn-md col-sm-12">Guardar</button>
+                            </div>
+                        </mat-step>
+                    </mat-vertical-stepper>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!--Modal para editar el detalle de la tarea-->
+<ng-template #editTaskToAssign>
+    <app-edit-task-to-assign></app-edit-task-to-assign>
+</ng-template>

@@ -1,0 +1,360 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+
+<body>
+    <div class="row justify-content-center">
+        <div class="col-12 container-info">
+            <div class="div col-12 mt-3 mx-1">
+                <h4 id="title"><fa-icon [icon]="iconCreateTask" class="icon-title"></fa-icon> Crear tarea</h4>
+                <div class="button-back">
+                    <button [routerLink]="'../my-tasks'" type="button" class="btn btn-secondary btn-sm">
+                        <fa-icon [icon]="iconBack"></fa-icon> Atrás</button>
+                </div>
+            </div>
+            <!--Stepper-->
+            <div class="row mt-4">
+                <!--Stepper horizontal en vista de computadoras-->
+                <ng-container *ngIf="!isMobileView else mobileView">
+                    <mat-horizontal-stepper linear #stepper="matHorizontalStepper">
+                        <!--Paso 1: Ingresar detalle de la tarea-->
+                        <mat-step [stepControl]="uploadTaskForm">
+                            <form [formGroup]="uploadTaskForm">
+                                <ng-template matStepLabel>Detalle de tarea</ng-template>
+                                <!--Título-->
+                                <div class="row">
+                                    <div class="col-12 mb-4">
+                                        <label class="mb-1"><b>Título</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="title" placeholder="Título*" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('title')?.hasError('required') && uploadTaskForm.get('title')?.touched || uploadTaskForm.get('title')?.hasError('pattern'),
+                                            'is-valid': uploadTaskForm.get('title')?.value?.length >= 10 && uploadTaskForm.get('title')?.hasError('pattern') == false
+                                            }" [maxlength]="100">
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('title')?.hasError('required') && uploadTaskForm.get('title')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('title')?.hasError('pattern')">
+                                            <small>¡Solo se permiten letras!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Visibilidad-->
+                                    <div class="mb-4 col-12 col-md-4">
+                                        <label class="mb-1"><b>Visibilidad</b></label>
+                                        <select class="form-select form-select-md" aria-label=".form-select-lg example"
+                                            [(ngModel)]="optionVisibilitySelected" formControlName="visibility"
+                                            [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('visibility')?.hasError('required') && uploadTaskForm.get('visibility')?.touched,
+                                            'is-valid': optionVisibilitySelected!= ''
+                                            }">
+                                            <option value="" selected>Seleccione una opción</option>
+                                            <option value="public">Pública</option>
+                                            <option value="private">Privada</option>
+                                        </select>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('visibility')?.hasError('required') && uploadTaskForm.get('visibility')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                    </div>
+                                    <!--Categoría-->
+                                    <div class="mb-4 col-12 col-md-4">
+                                        <label class="mb-1"><b>Categoría</b></label>
+                                        <select class="form-select form-select-md" aria-label=".form-select-lg example"
+                                            [(ngModel)]="optionCategorySelected" formControlName="category" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('category')?.hasError('required') && uploadTaskForm.get('category')?.touched,
+                                            'is-valid': optionCategorySelected!= ''
+                                            }">
+                                            <option value="" selected>Seleccione una opción</option>
+                                            <option *ngFor="let category of arrayCategories" [value]="category.id">
+                                                {{category.name}}</option>
+                                        </select>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('category')?.hasError('required') && uploadTaskForm.get('category')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                    </div>
+                                    <!--Tiempo estimado-->
+                                    <div class="mb-4 col-12 col-md-4">
+                                        <label class="mb-1"><b>Tiempo estimado (Minutos)</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="timeEstimated" placeholder="Tiempo estimado*" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('timeEstimated')?.hasError('required') && uploadTaskForm.get('timeEstimated')?.touched || uploadTaskForm.get('timeEstimated')?.hasError('pattern'),
+                                            'is-valid': uploadTaskForm.get('timeEstimated')?.value?.length >= 1 && uploadTaskForm.get('timeEstimated')?.hasError('pattern') == false
+                                        }" [maxlength]="2">
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('timeEstimated')?.hasError('required') && uploadTaskForm.get('timeEstimated')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('timeEstimated')?.hasError('pattern')">
+                                            <small>¡Solo se permiten números!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Descripcipon (pasos)-->
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label class="mb-1"><b>Descripción</b></label>
+                                        <textarea class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="description" placeholder="Descripción*" rows="7" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('description')?.hasError('required') && uploadTaskForm.get('description')?.touched,
+                                            'is-valid': uploadTaskForm.get('description')?.value?.length >= 10
+                                        }" [maxlength]="600"></textarea>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('description')?.hasError('required') && uploadTaskForm.get('description')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons mb-3">
+                                    <button [disabled]="!uploadTaskForm.valid" mat-button type="button"
+                                        class="btn btn-primary btn-md" (click)="nextStepAssignTasks()">
+                                        Siguiente <fa-icon [icon]="iconNextStep"></fa-icon></button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <!--Paso 2: Seleccionar videos a asignar-->
+                        <mat-step>
+                            <ng-template matStepLabel>Asignar videos</ng-template>
+                            <div class="row mb-3">
+                                <p>Seleccione uno (1) o más videos explicativos para su tarea...</p>
+                                <form class="col-6 col-md-4">
+                                    <input class="form-control me-1" type="text" placeholder="Buscar..."
+                                        name="videosTosearch" [(ngModel)]="videosToSearch">
+                                </form>
+                            </div>
+                            <div class="card" id="htmlTablePDF">
+                                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                                    style="position: relative;">
+                                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">N°</th>
+                                                <th scope="col">Asignar</th>
+                                                <th scope="col">Título</th>
+                                                <th scope="col">Tipo</th>
+                                                <th scope="col">URL</th>
+                                                <th scope="col">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngIf="arrayVideosInfo.length > 0; else noResults">
+                                                <tr
+                                                    *ngFor="let video of arrayVideosInfo | slice:initialPage:finalPage | searchRegisters:videosToSearch:optionFilter; let i = index">
+                                                    <th scope="row">{{i+1}}</th>
+                                                    <td>
+                                                        <input type="checkbox"
+                                                            [checked]="arrayVideosId.includes(video.id)"
+                                                            (change)="addOrRemoveVideoId(video.id)">
+                                                    </td>
+                                                    <td>{{video.title}}</td>
+                                                    <td>{{video.type}}</td>
+                                                    <td>{{video.url}}</td>
+                                                    <td class="actions">
+                                                        <fa-icon data-bs-toggle="mensaje" title="Ver detalles"
+                                                            id="iconVerDetalles" [icon]="iconVerDetalles"></fa-icon>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            <!--Para cuando no cargue la data-->
+                                            <ng-template #noResults>
+                                                <tr>
+                                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                                </tr>
+                                            </ng-template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Paginación-->
+                            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]"
+                                [pageSize]="itemsForPage" [length]="arrayVideosInfo.length"
+                                (page)="changePage($event)">
+                            </mat-paginator>
+                            <!--Botones de regresar y registrar tarea-->
+                            <div class="action-buttons mb-3">
+                                <button mat-button matStepperPrevious type="button"
+                                    class="btn btn-secondary btn-md">
+                                    <fa-icon [icon]="iconPreviousStep"></fa-icon> Regresar</button>
+                                <button mat-button (click)="registerTaskDetail()" type="button"
+                                    class="btn btn-primary btn-md">Aceptar</button>
+                            </div>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+                </ng-container>
+                <!--Stepper cambia a vertical cuando la vista pasa a un dispositivo móvil-->
+                <ng-template #mobileView>
+                    <mat-vertical-stepper linear #stepper="matVerticalStepper">
+                        <!--Paso 1: Ingresar detalle de la tarea-->
+                        <mat-step [stepControl]="uploadTaskForm">
+                            <form [formGroup]="uploadTaskForm">
+                                <ng-template matStepLabel>Detalle de tarea</ng-template>
+                                <!--Título-->
+                                <div class="row">
+                                    <div class="col-12 mb-4">
+                                        <label class="mb-1"><b>Título</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="title" placeholder="Título*" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('title')?.hasError('required') && uploadTaskForm.get('title')?.touched || uploadTaskForm.get('title')?.hasError('pattern'),
+                                            'is-valid': uploadTaskForm.get('title')?.value?.length >= 10 && uploadTaskForm.get('title')?.hasError('pattern') == false
+                                            }" [maxlength]="100">
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('title')?.hasError('required') && uploadTaskForm.get('title')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('title')?.hasError('pattern')">
+                                            <small>¡Solo se permiten letras!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!--Visibilidad-->
+                                    <div class="mb-4 col-12 col-md-4">
+                                        <label class="mb-1"><b>Visibilidad</b></label>
+                                        <select class="form-select form-select-md" aria-label=".form-select-lg example"
+                                            [(ngModel)]="optionVisibilitySelected" formControlName="visibility"
+                                            [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('visibility')?.hasError('required') && uploadTaskForm.get('visibility')?.touched,
+                                            'is-valid': optionVisibilitySelected!= ''
+                                            }">
+                                            <option value="" selected>Seleccione una opción</option>
+                                            <option value="public">Pública</option>
+                                            <option value="private">Privada</option>
+                                        </select>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('visibility')?.hasError('required') && uploadTaskForm.get('visibility')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                    </div>
+                                    <!--Categoría-->
+                                    <div class="mb-4 col-12 col-md-4">
+                                        <label class="mb-1"><b>Categoría</b></label>
+                                        <select class="form-select form-select-md" aria-label=".form-select-lg example"
+                                            [(ngModel)]="optionCategorySelected" formControlName="category" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('category')?.hasError('required') && uploadTaskForm.get('category')?.touched,
+                                            'is-valid': optionCategorySelected!= ''
+                                            }">
+                                            <option value="" selected>Seleccione una opción</option>
+                                            <option *ngFor="let category of arrayCategories" [value]="category.id">
+                                                {{category.name}}</option>
+                                        </select>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('category')?.hasError('required') && uploadTaskForm.get('category')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                    </div>
+                                    <!--Tiempo estimado-->
+                                    <div class="mb-4 col-12 col-md-4">
+                                        <label class="mb-1"><b>Tiempo estimado (Minutos)</b></label>
+                                        <input type="text" class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="timeEstimated" placeholder="Tiempo estimado*" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('timeEstimated')?.hasError('required') && uploadTaskForm.get('timeEstimated')?.touched || uploadTaskForm.get('timeEstimated')?.hasError('pattern'),
+                                            'is-valid': uploadTaskForm.get('timeEstimated')?.value?.length >= 1 && uploadTaskForm.get('timeEstimated')?.hasError('pattern') == false
+                                        }" [maxlength]="2">
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('timeEstimated')?.hasError('required') && uploadTaskForm.get('timeEstimated')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('timeEstimated')?.hasError('pattern')">
+                                            <small>¡Solo se permiten números!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Descripcipon (pasos)-->
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <label class="mb-1"><b>Descripción</b></label>
+                                        <textarea class="form-control form-control-lg bg-light fs-6"
+                                            formControlName="description" placeholder="Descripción*" rows="7" [ngClass]="{
+                                            'is-invalid': uploadTaskForm.get('description')?.hasError('required') && uploadTaskForm.get('description')?.touched,
+                                            'is-valid': uploadTaskForm.get('description')?.value?.length >= 10
+                                        }" [maxlength]="600"></textarea>
+                                        <div class="validators"
+                                            *ngIf="uploadTaskForm.get('description')?.hasError('required') && uploadTaskForm.get('description')?.touched">
+                                            <small>¡Este campo es requerido!</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons mb-3">
+                                    <button [disabled]="!uploadTaskForm.valid" mat-button type="button"
+                                        class="btn btn-primary btn-md" (click)="nextStepAssignTasks()">
+                                        Siguiente <fa-icon [icon]="iconNextStep"></fa-icon></button>
+                                </div>
+                            </form>
+                        </mat-step>
+                        <!--Paso 2: Seleccionar videos a asignar-->
+                        <mat-step>
+                            <ng-template matStepLabel>Asignar videos</ng-template>
+                            <div class="row mb-3">
+                                <p>Seleccione uno (1) o más videos explicativos para su tarea...</p>
+                                <form class="col-12 col-md-4">
+                                    <input class="form-control me-1" type="text" placeholder="Buscar..."
+                                        name="videosTosearch" [(ngModel)]="videosToSearch">
+                                </form>
+                            </div>
+                            <div class="card" id="htmlTablePDF">
+                                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+                                    style="position: relative;">
+                                    <table class="table table-striped mb-0" id="htmlExcelTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">N°</th>
+                                                <th scope="col">Asignar</th>
+                                                <th scope="col">Título</th>
+                                                <th scope="col">Tipo</th>
+                                                <th scope="col">URL</th>
+                                                <th scope="col">Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngIf="arrayVideosInfo.length > 0; else noResults">
+                                                <tr
+                                                    *ngFor="let video of arrayVideosInfo | slice:initialPage:finalPage | searchRegisters:videosToSearch:optionFilter; let i = index">
+                                                    <th scope="row">{{i+1}}</th>
+                                                    <td>
+                                                        <input type="checkbox"
+                                                            [checked]="arrayVideosId.includes(video.id)"
+                                                            (change)="addOrRemoveVideoId(video.id)">
+                                                    </td>
+                                                    <td>{{video.title}}</td>
+                                                    <td>{{video.type}}</td>
+                                                    <td>{{video.url}}</td>
+                                                    <td class="actions">
+                                                        <fa-icon data-bs-toggle="mensaje" title="Ver detalles"
+                                                            id="iconVerDetalles" [icon]="iconVerDetalles"></fa-icon>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                            <!--Para cuando no cargue la data-->
+                                            <ng-template #noResults>
+                                                <tr>
+                                                    <td colspan="7" class="no-results">Sin resultados...</td>
+                                                </tr>
+                                            </ng-template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!--Paginación-->
+                            <mat-paginator id="paginacion" [pageSizeOptions]="[5, 10, 25, 100]"
+                                [pageSize]="itemsForPage" [length]="arrayVideosInfo.length"
+                                (page)="changePage($event)">
+                            </mat-paginator>
+                            <!--Botones de regresar y registrar tarea-->
+                            <div class="action-buttons mb-3 mt-3">
+                                <button mat-button matStepperPrevious type="button"
+                                    class="btn btn-secondary btn-md col-sm-12 mb-2">
+                                    <fa-icon [icon]="iconPreviousStep"></fa-icon> Regresar</button>
+                                <button mat-button (click)="registerTaskDetail()" type="button"
+                                    class="btn btn-primary btn-md col-sm-12">Aceptar</button>
+                            </div>
+                        </mat-step>
+                    </mat-vertical-stepper>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,53 @@
+body {
+    background-color: #FFF;
+    height: auto;
+    border-radius: 8px;
+}
+
+.div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.div>button {
+    border-radius: 50px;
+}
+
+.container-info {
+    padding: .5rem 2rem;
+}
+
+.validators {
+    color: #FC3B56;
+}
+
+.icon-title {
+    color: #007BBD !important;
+}
+
+.action-buttons {
+    text-align: end;
+}
+
+/*Botón aceptar (Guardar)*/
+.btn-primary {
+    border-radius: 50px;
+    background-color: #007BBD !important;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    margin-right: 10px;
+    border-radius: 50px;
+}
+
+/*Responsive Web Design*/
+@media screen and (max-width: 760px) {
+    .button-back {
+        text-align: end;
+    }
+
+    .action-buttons>button{
+        width: 100%;
+    }
+}

@@ -1,0 +1,22 @@
+/*Botón buscar para cargar datos del paciente*/
+.icon-search{
+    background-color: #007BBD;
+    color:#FFF;
+    border-radius: 0 5px 5px 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-secondary{
+    margin-right: 10px;
+    border-radius: 50px;
+}
+
+/*Responsive Web Design*/
+@media screen and (max-width: 760px) {
+    .action-buttons>button{
+        width: 100%;
+    }
+}

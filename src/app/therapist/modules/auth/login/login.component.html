@@ -1,0 +1,37 @@
+<app-spinner *ngIf="!spinnerStatus"></app-spinner>
+<div class="row vh-100">
+    <app-info-login class="col-md-7"></app-info-login>
+
+    <!-------------------- ------ Form Login ---------------------------->
+    <div class="col-md-5 right-content d-flex justify-content-center align-items-center">
+        <div class="row align-items-center">
+            <div class="header-text mb-5">
+                <h1 class="text-center">Inicio de sesión</h1>
+            </div>
+
+            <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+                <div class="mb-3">
+                    <label class="mb-1"><b>Usuario</b></label>
+                    <input type="text" class="form-control form-control-lg bg-light fs-6" formControlName="identification" placeholder="Usuario*">
+                </div>
+                <div class="mb-5">
+                    <label class="mb-1"><b>Contraseña</b></label>
+                    <input type="password" class="form-control form-control-lg bg-light fs-6" formControlName="password" placeholder="Contraseña*">
+                </div>
+
+                <div class="content-buttons">
+                    <button type="submit" class="mb-3 btn btn-lg btn-primary w-100 fs-6">Iniciar sesión</button>
+                    <button type="button" (click)="goToForgotPassword()" class="btn btn-lg btn-outline-primary w-100 fs-6"><small> <fa-icon [icon]="iconForgotPassword"></fa-icon> Olvidé la contraseña</small></button>
+                </div>
+
+                <div class="row text-center mt-5 no-account">
+                    <a class="mx-3" (click)="openModalNoAccount(noAccount)">¿No tienes una cuenta?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #noAccount>
+   <app-no-account></app-no-account>
+</ng-template>

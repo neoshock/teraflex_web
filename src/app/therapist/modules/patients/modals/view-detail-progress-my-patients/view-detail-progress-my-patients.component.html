@@ -1,0 +1,116 @@
+<div class="container">
+    <div class="modal-header">
+        <h4 class="modal-title"><fa-icon [icon]="iconDetailProgress"></fa-icon> Detalle de tarea asignada</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Título</b></label>
+                    <p *ngIf="taskDetailAssign.title!='--'; else noResults">{{taskDetailAssign.title}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Tiempo estimado</b></label>
+                    <p *ngIf="taskDetailAssign.estimatedTime!='--'; else noResults">
+                        {{taskDetailAssign.estimatedTime}} minutos</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Estado</b></label><br/>
+                    <span *ngIf="taskDetailAssign.isCompleted!='--'; else noResults"
+                        [style.background-color]="taskDetailAssign.isCompleted ? '#198754' : '#ccc'"
+                        [style.border-radius]="taskDetailAssign.isCompleted ? '5px' : '5px'"
+                        [style.padding]="taskDetailAssign.isCompleted ? '3px' : '3px'"
+                        [style.color]="taskDetailAssign.isCompleted ? 'white' : 'black'">
+                        {{taskDetailAssign.isCompleted ? " Completada " : " Pendiente "}}</span>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Fecha de creación</b></label>
+                    <p *ngIf="taskDetailAssign.createdAt!='--'; else noResults">{{taskDetailAssign.createdAt}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Fecha de vencimiento</b></label>
+                    <p *ngIf="taskDetailAssign.dueDate!='--'; else noResults">{{taskDetailAssign.dueDate}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4" *ngIf="taskDetailAssign.files.length > 0; else noVideos">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Videos registrados</b></label>
+                    <p *ngFor="let video of taskDetailAssign.files; let i = index">[{{i+1}}] {{video.title}}</p>
+                </div>
+                <ng-template class="info mb-4" #noVideos>
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Videos registrados</b></label>
+                    <p>Esta tarea no tiene videos asignados</p>
+                </ng-template>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Descripción</b></label>
+                    <p *ngIf="taskDetailAssign.description!='--'; else noResults">{{taskDetailAssign.description}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status"
+                                aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button (click)="modal.dismissAll()" type="button" class="btn btn-next btn"
+            style="border-radius: 50px;">Aceptar</button>
+    </div>
+</div>

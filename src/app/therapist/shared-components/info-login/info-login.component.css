@@ -1,0 +1,20 @@
+.left-content {
+    background-color: #007BBD;
+}
+
+.content-image img {
+    width: 250px;
+}
+
+.title,
+.description {
+    width: 80%;
+    font-family: sans-serif;
+    color: white;
+}
+
+.location {
+    position: fixed;
+    bottom: 0;
+    font-size: 20px;
+}

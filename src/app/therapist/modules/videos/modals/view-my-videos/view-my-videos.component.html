@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="modal-header">
+        <h4 class="modal-title"><fa-icon [icon]="iconVideo"></fa-icon> Detalle de video</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Título</b></label>
+                    <p *ngIf="videoDetail.title!='--'; else noResults">{{videoDetail.title}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!--Para mostrar el enlace de Youtube-->
+            <ng-container *ngIf="type == 'online'; else videoLocal">
+                <div class="col-12">
+                    <div class="info mb-4">
+                        <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Video de YouTube</b></label><br/>
+                        <iframe [src]="videoDetail.link" class="centered-video-youtube" frameborder="0" allowfullscreen></iframe>
+                        <ng-template #noResults>
+                            <div class="spinner">
+                                <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </ng-container>
+            <!--Para mostrar el reproductor de video-->
+            <ng-template #videoLocal>
+                <div class="col-12">
+                    <div class="info mb-4">
+                        <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Video local</b></label><br/>
+                        <video [src]="videoUrl" autoplay controls class="centered-video-local"></video>
+                        <ng-template #noResults>
+                            <div class="spinner">
+                                <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </ng-template>
+                    </div>                    
+                </div>
+            </ng-template>
+        </div>
+        <div class="row">
+            <div class="col-12 ">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Visibilidad</b></label>
+                    <p class="iconsPublicPrivate"> <fa-icon
+                            [icon]="videoDetail.isPublic ? iconPublic : iconPrivate"></fa-icon> {{videoDetail.isPublic ?
+                        "Pública" :
+                        " Privada"}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="info mb-4">
+                    <label><b><fa-icon [icon]="iconArrowRight"></fa-icon> Descripción</b></label>
+                    <p *ngIf="videoDetail.description!='--'; else noResults">{{videoDetail.description}}</p>
+                    <ng-template #noResults>
+                        <div class="spinner">
+                            <span class="spinner-border spinner-border-sm" style="color: #007BBD;" role="status" aria-hidden="true"></span>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button (click)="modal.dismissAll()" type="button" class="btn btn-primary btn">Aceptar</button>
+    </div>
+</div>

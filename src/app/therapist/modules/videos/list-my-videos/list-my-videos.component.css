@@ -1,0 +1,8 @@
+#htmlExcelTable td:nth-child(6),
+#htmlExcelTable th:nth-child(6) {
+  max-width: 250px; 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
